@@ -53,17 +53,17 @@ curl -O https://raw.githubusercontent.com/prodhokter/dataset-program-studi-indon
 
 ### 2. Lewat API publik
 
-Base URL: `https://datasets.snbtku.com` (hostname kedua: `https://api.ibnuhabib.web.id`)
+Base URL publik: `https://api.ibnuhabib.web.id`. Hostname internal untuk aplikasi SNBTKU (layanan sama): `https://datasets.snbtku.com`.
 
 ```bash
 # Cari prodi
-curl "https://datasets.snbtku.com/api/v1/majors?q=informatika&limit=5"
+curl "https://api.ibnuhabib.web.id/api/v1/majors?q=informatika&limit=5"
 
 # Filter kategori dan PT
-curl "https://datasets.snbtku.com/api/v1/majors?category=SAINTEK&university_id=08ebcbab-3307-4a61-93b1-9c58222723ea&limit=10"
+curl "https://api.ibnuhabib.web.id/api/v1/majors?category=SAINTEK&university_id=08ebcbab-3307-4a61-93b1-9c58222723ea&limit=10"
 
 # Rekomendasi prodi untuk skor tertentu (passing grade kurang dari atau sama dengan skor)
-curl "https://datasets.snbtku.com/api/v1/majors/smart-recommendations?score=700&category=SAINTEK&count=5"
+curl "https://api.ibnuhabib.web.id/api/v1/majors/smart-recommendations?score=700&category=SAINTEK&count=5"
 ```
 
 Contoh respons nyata:
