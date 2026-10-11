@@ -1,98 +1,127 @@
 # Dataset Program Studi Indonesia
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![API Status](https://img.shields.io/badge/api-live-green)](https://api.ibnuhabib.web.id/api/majors)
 [![Records](https://img.shields.io/badge/records-4.971-orange)](program-studi-indonesia.csv)
 
-Data seluruh program studi perguruan tinggi di Indonesia, dilengkapi kuota, peminat, keketatan, dan passing grade dari SNPMB.
+Data 4.971 program studi pada perguruan tinggi peserta SNPMB, lengkap dengan daya tampung, jumlah peminat, rasio keketatan, passing grade, dan rentang nilai, **untuk tahun data 2024**.
 
 ## Data
 
-| File | Records | Size | Delimiter |
-|------|---------|------|-----------|
+| File | Baris | Ukuran | Delimiter |
+|------|-------|--------|-----------|
 | `program-studi-indonesia.csv` | 4.971 | ~1 MB | `;` (titik koma) |
-
-## Kolom
 
 | Kolom | Deskripsi | Contoh |
 |-------|-----------|--------|
-| `id` | UUID prodi | `a83673a9-...` |
-| `university_id` | UUID perguruan tinggi | `3557957e-...` |
-| `code` | Kode prodi SNPMB | `24743030` |
-| `name` | Nama program studi | `TEKNIK INFORMATIKA` |
+| `id` | UUID prodi | `0d47b35d-f7e8-4b1c-a283-cb8870bafaeb` |
+| `university_id` | UUID PT (relasi ke dataset perguruan tinggi) | `08ebcbab-3307-4a61-93b1-9c58222723ea` |
+| `code` | Kode prodi SNPMB | `13321021` |
+| `name` | Nama program studi (huruf besar) | `SEKOLAH TEKNIK ELEKTRO DAN INFORMATIKA - KOMPUTASI (STEI-K)` |
 | `degree` | Jenjang | `Sarjana`, `Sarjana Terapan`, `Diploma Tiga` |
-| `quota` | Daya tampung | `120` |
-| `applicants` | Jumlah peminat | `2450` |
+| `quota` | Daya tampung | `90` |
+| `applicants` | Jumlah peminat | `3454` |
 | `category` | Kategori | `SAINTEK`, `SOSHUM` |
-| `sub_category` | Sub-kategori | |
-| `competition_ratio` | Rasio keketatan (peminat/kuota) | `20.42` |
-| `passing_grade` | Passing grade estimasi | `720` |
-| `classification` | Klasifikasi | |
-| `min_score` | Skor minimum (data 2024) | `689` |
-| `max_score` | Skor maksimum (data 2024) | `756` |
-| `university_name` | Nama perguruan tinggi | `Universitas Indonesia` |
-| `university_code` | Kode singkat PT | `UI` |
+| `sub_category` | Sub-kategori (banyak yang kosong) | (kosong) |
+| `competition_ratio` | Rasio keketatan (peminat dibagi kuota) | `38.38` |
+| `passing_grade` | Passing grade estimasi, rentang data 371 sampai 790 | `790` |
+| `classification` | Klasifikasi level | `Level 9` |
+| `min_score` | Nilai minimum | `677` |
+| `max_score` | Nilai maksimum | `697` |
+| `university_name` | Nama PT (denormalisasi, memudahkan pemakaian) | `Institut Teknologi Bandung` |
+| `university_code` | Kode PT | `ITB` |
 | `university_region` | Provinsi PT | `Jawa Barat` |
-| `university_type` | Tipe PT | `Negeri`, `Swasta`, `Kedinasan` |
+| `university_type` | Tipe PT | `Negeri` |
 
-## Contoh Data
+Sebaran data: jenjang Sarjana 3.668, Sarjana Terapan 749, Diploma Tiga 554. Kategori SAINTEK 3.464, SOSHUM 1.507.
+
+Catatan penting: **statistik tahunan melekat pada baris ini dan berasal dari tahun 2024**. Di platform SNBTKU, statistik dipisah ke tabel per tahun sehingga tahun berikutnya bisa ditambahkan tanpa mengubah struktur prodi.
+
+## Contoh data
 
 ```csv
 id;university_id;code;name;degree;quota;applicants;category;sub_category;competition_ratio;passing_grade;classification;min_score;max_score;university_name;university_code;university_region;university_type
-a83673a9-...;3557957e-...;24743030;TEKNIK INFORMATIKA;Sarjana;120;2450;SAINTEK;;20.42;720;;689;756;Universitas Indonesia;UI;Jawa Barat;Negeri
+0d47b35d-f7e8-4b1c-a283-cb8870bafaeb;08ebcbab-3307-4a61-93b1-9c58222723ea;13321021;SEKOLAH TEKNIK ELEKTRO DAN INFORMATIKA - KOMPUTASI (STEI-K);Sarjana;90;3454;SAINTEK;;38.38;790;Level 9;677;697;Institut Teknologi Bandung;ITB;Jawa Barat;Negeri
 ```
 
-## API
+## Cara pakai
 
-Gunakan [api-datasets-indonesia](https://github.com/prodhokter/api-datasets-indonesia) untuk akses REST API.
-
-**Base URL:** `https://api.ibnuhabib.web.id`
+### 1. Unduh langsung
 
 ```bash
-# Cari program studi
-curl "https://api.ibnuhabib.web.id/api/majors?search=informatika&limit=5"
-
-# Prodi di PT tertentu
-curl "https://api.ibnuhabib.web.id/api/majors?university=ui"
-
-# Filter kategori + jenjang
-curl "https://api.ibnuhabib.web.id/api/majors?category=saintek&degree=sarjana&limit=10"
-
-# Prodi kedokteran di PTN
-curl "https://api.ibnuhabib.web.id/api/majors?search=kedokteran&type=negeri"
-
-# Detail prodi
-curl "https://api.ibnuhabib.web.id/api/majors/a83673a9-..."
-
-# Download CSV
-curl -O "https://api.ibnuhabib.web.id/download/majors.csv"
+curl -O https://raw.githubusercontent.com/prodhokter/dataset-program-studi-indonesia/master/program-studi-indonesia.csv
 ```
 
-**Parameter search:**
+### 2. Lewat API publik
 
-| Param | Deskripsi |
-|-------|-----------|
-| `search` | Nama program studi |
-| `university` | Nama atau kode PT |
-| `category` | `SAINTEK` atau `SOSHUM` |
-| `degree` | `Sarjana`, `Sarjana Terapan`, `Diploma Tiga` |
-| `region` | Provinsi PT |
-| `type` | `Negeri`, `Swasta`, `Kedinasan` |
-| `page` | Halaman (default 1) |
-| `limit` | Per halaman (max 500, default 50) |
+Base URL: `https://datasets.snbtku.com` (hostname kedua: `https://api.ibnuhabib.web.id`)
 
-## Dataset Terkait
+```bash
+# Cari prodi
+curl "https://datasets.snbtku.com/api/v1/majors?q=informatika&limit=5"
 
-- [api-datasets-indonesia](https://github.com/prodhokter/api-datasets-indonesia) — REST API
-- [dataset-perguruan-tinggi-indonesia](https://github.com/prodhokter/dataset-perguruan-tinggi-indonesia)
-- [dataset-sekolah-indonesia](https://github.com/prodhokter/dataset-sekolah-indonesia)
-- [dataset-kbbi-indonesia](https://github.com/prodhokter/dataset-kbbi-indonesia)
-- [dataset-wilayah-indonesia](https://github.com/prodhokter/dataset-wilayah-indonesia)
+# Filter kategori dan PT
+curl "https://datasets.snbtku.com/api/v1/majors?category=SAINTEK&university_id=08ebcbab-3307-4a61-93b1-9c58222723ea&limit=10"
 
-## Sumber
+# Rekomendasi prodi untuk skor tertentu (passing grade kurang dari atau sama dengan skor)
+curl "https://datasets.snbtku.com/api/v1/majors/smart-recommendations?score=700&category=SAINTEK&count=5"
+```
 
-SNPMB / LTMPT — data resmi seleksi nasional perguruan tinggi.
+Contoh respons nyata:
 
-## Lisensi
+```json
+// GET /api/v1/majors?q=informatika&limit=1
+{
+  "items": [
+    {
+      "id": "0d47b35d-f7e8-4b1c-a283-cb8870bafaeb",
+      "university_id": "08ebcbab-3307-4a61-93b1-9c58222723ea",
+      "university_name": "Institut Teknologi Bandung",
+      "university_code": "ITB",
+      "university_region": "Jawa Barat",
+      "university_type": "Negeri",
+      "name": "SEKOLAH TEKNIK ELEKTRO DAN INFORMATIKA - KOMPUTASI (STEI-K)",
+      "degree": "Sarjana",
+      "code": "13321021",
+      "category": "SAINTEK",
+      "stat_year": 2024,
+      "quota": 90,
+      "applicants": 3454
+    }
+  ],
+  "total": 58,
+  "limit": 1,
+  "offset": 0
+}
+```
 
-MIT — © 2025 [Ibnul Habib](https://github.com/prodhokter). Data bersumber dari institusi pemerintah Indonesia.
+```json
+// GET /api/v1/majors/smart-recommendations?score=700&count=1
+{
+  "count": 1,
+  "items": [
+    {
+      "name": "TEKNIK GEOLOGI",
+      "university_name": "Universitas Sriwijaya",
+      "university_code": "UNSRI",
+      "university_region": "Sumatera Selatan",
+      "category": "SAINTEK",
+      "stat_year": 2024,
+      "quota": 42,
+      "applicants": 596,
+      "competition_ratio": 14.19,
+      "passing_grade": 690
+    }
+  ]
+}
+```
+
+Rate limit 120 permintaan per menit per IP, CORS terbuka, respons di-cache 5 menit.
+
+## Sumber & lisensi
+
+- Sumber: data SNPMB (kuota, peminat, dan statistik nilai) tahun 2024.
+- Repo ini (kompilasi dan pembersihan): MIT, Copyright (c) 2025 Ibnul Habib.
+
+## Changelog
+
+Lihat [CHANGELOG.md](CHANGELOG.md).
